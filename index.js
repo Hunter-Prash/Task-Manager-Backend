@@ -36,6 +36,19 @@ const connectDB=async()=>{
 };
 connectDB();
 
+//route to render ejs page
+app.get('/',async(req,res)=>{
+    const tasks=await Task.find();
+    res.render('index',{tasks})
+})
+
+app.post('/tasks',async(req,res)=>{
+    const {title,description}=req.body
+    const newTask= new Task({title,description});
+    await newTask.save();
+    res.redirect('/');
+})
+
 app.listen(PORT,()=>{
     console.log(`Server started at ${PORT}`)
 })
