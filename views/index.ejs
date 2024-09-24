@@ -14,13 +14,19 @@
         <button type="submit">Add Task</button>
     </form>
 
-    
+
     <h2>All tasks</h2>
     <ul>
         <% tasks.forEach(task=> { %>
             <li>
                 <strong><%= task.title %></strong>: <%= task.description %>
             </li>
+
+            <form action="/tasks/<%= task._id %>" method="POST">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit">Delete</button>
+            </form>
+      
         <% }) %>
     </ul>
 

@@ -1,7 +1,6 @@
 const express=require('express')
 const mongoose=require('mongoose')
 const bodyParser=require('body-parser')
-//const methodOverrride=require('method-override')
 const path=require('path')
 require('dotenv').config(); // Load environment variables from .env file
 
@@ -13,7 +12,6 @@ const app=express()
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
-//app.use(methodOverride('_method'));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static('public'));
@@ -48,6 +46,13 @@ app.post('/tasks',async(req,res)=>{
     await newTask.save();
     res.redirect('/');
 })
+
+app.post('/tasks/:id', async (req, res) => {
+    if (req.body._method === 'DELETE') {
+        await Task.findByIdAndDelete(req.params.id);
+    }
+    res.redirect('/');
+});
 
 app.listen(PORT,()=>{
     console.log(`Server started at ${PORT}`)
