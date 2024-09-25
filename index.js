@@ -40,6 +40,7 @@ app.get('/',async(req,res)=>{
     res.render('index',{tasks})
 })
 
+//route to add tasks
 app.post('/tasks',async(req,res)=>{
     const {title,description}=req.body
     const newTask= new Task({title,description});
@@ -47,6 +48,20 @@ app.post('/tasks',async(req,res)=>{
     res.redirect('/');
 })
 
+//route to get the task which we wanna edit
+app.get('/tasks/:id/edit',async(req,res)=>{
+    const task=await Task.findById(req.params.id)
+    res.render('edit',{task})
+})
+
+// Route to handle updating a task
+app.post('/tasks/:id/update', async (req, res) => {
+    const { title, description } = req.body;
+    await Task.findByIdAndUpdate(req.params.id, { title, description });
+    res.redirect('/');
+});
+
+//route to delete tasks
 app.post('/tasks/:id', async (req, res) => {
     if (req.body._method === 'DELETE') {
         await Task.findByIdAndDelete(req.params.id);
